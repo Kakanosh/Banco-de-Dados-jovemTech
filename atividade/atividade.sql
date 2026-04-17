@@ -20,3 +20,5 @@ CREATE TABLE IF NOT EXISTS livros(
   preco NUMERIC(10,2) NOT NULL,
   autor_id INTEGER REFERENCES autores(id) ON DELETE RESTRICT
 );-- Na tabela track a coluna album_id uma foreign key se conecta a tabela album onde o pk é o album_id e a tabela album se conecta com a tabela artist pelo artist_id que é o foreign key com a tabela artist que tem a pk como artist_id
+
+ALTER TABLE livros ADD COLUMN paginas INTEGER;
