@@ -44,21 +44,21 @@ CREATE TABLE  IF NOT EXISTS livros (
    autor_id INTEGER REFERENCES autores(id) ON DELETE RESTRICT
 );
 
--- atividade: Tabela Sistema de clínica Médica
+-- atividade: Tabela Sistema de clínica Médica [SABOTAGEM 1]
 CREATE TABLE consultas (
     id INTEGER,
     paciente VARCHAR(100),
     medico VARCHAR(100),
     data_consulta TIMESTAMP,
     valor REAL,
-    status VARCHAR(50)
-)
+    status VARCHAR(20) DEFAULT "ativo",
+);
 CREATE TABLE consultas_certas (
     id SERIAL PRIMARY KEY,
     paciente_id VARCHAR REFERENCES paciente(id) ON DELETE RESTRICT,
     medico_id INTEGER REFERENCES medico(id) ON DELETE RESTRICT,
-    data_consulta TIMESTAMP,
-    valor NUMERIC(),
+    data_consulta TIMESTAMPTZ DEFAULT NOW(),
+    valor NUMERIC(10,2) NOT NULL,
     status VARCHAR(50)
 )
 
@@ -72,8 +72,42 @@ CREATE TABLE medico (
     nome VARCHAR(100),
 );
 
+-- Segunda atividade [SABOTAGEM 2]
 
+CREATE TABLE pedidos (
+    id SERIAL PRIMARY KEY ,
+    cliente_id INTEGER REFERENCES clientes(id) NOT NULL,
+    total DOUBLE PRECISION,
+    desconto NUMERIC(10,2),
+    criado_em TIMESTAMP
+    status VARCHAR(20) DEFAULT 'pendente'
+)
 
+-- esquema da aula 2
+
+CREATE TABLE artistas_caju (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    criado_em TIMESTAMPTZ DEFAULT NOW(),
+    pais_origem VARCHAR(50,)
+);
+
+CREATE TABLE albuns_caju (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    ano INTEGET NOT NULL CHECK (ano > 1850),
+    preco NUMERIC(10,2) CHECK (preco > 0),
+    artista_id INTEGER NOT NULL REFERENCES artistas_caju(id),
+);
+
+CREATE TABLE faixas_caju (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    duracao INTEGER NOT NULL CHECK (duracao > 0),
+    album_id INTEGER NOT NULL REFERENCES albuns_caju(id),
+);
+
+ALTER TABLE albuns_caju ADD COLUMN genero_musical TYPE VARCHAR(50) CHECK (genero_musical IN ('Rock', 'Pop', 'Rap', 'Samba', 'MPB'))
 
 --Comando para adicionar uma coluna de uma tabela criada
 ALTER TABLE livros ADD COLUMN paginas integer;
